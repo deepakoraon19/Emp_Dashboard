@@ -1,0 +1,27 @@
+<p-toolbar styleClass="mb-4 gap-2">
+    <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()">New</button>
+</p-toolbar>
+<p-table [value]="records" styleClass="p-datatable-gridlines">
+  <ng-template pTemplate="header">
+      <tr class="row">
+        <th></th>
+          <th>Id</th>
+          <th>FirstName</th>
+          <th>SecondName</th>
+          <th>Department</th>
+          <th>Role</th>
+          <th>Phone</th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-records>
+      <tr class="row">
+          <td><button>Edit</button></td>
+          <td class="center">{{records.id}}</td>
+          <td class="center">{{records.firstName}}</td>
+          <td class="center">{{records.secondName}}</td>
+          <td class="center">{{records.department}}</td>
+          <td class="center">{{records.role}}</td>
+          <td class="center">{{records.phone}}</td>
+      </tr>
+  </ng-template>
+</p-table>
