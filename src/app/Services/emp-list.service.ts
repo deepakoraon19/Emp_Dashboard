@@ -21,6 +21,20 @@ export class EmpListService {
     return this.http.get(targetUri);
   }
 
-  
+  addEmployee(employee:Employee){
+    const targetUri = this.controller;
+    return this.http.post(targetUri, employee);
+  }
+  updateEmployee(employee:Employee){
+    const targetUri = this.controller;
+    return this.http.put(targetUri,employee);
+  }
+
+  deleteEmployee(id:number){
+    const targetUri = `${this.controller}/${id}`;
+    return this.http.delete(targetUri);
+  }
+
+
 
 }

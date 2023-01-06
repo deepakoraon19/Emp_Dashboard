@@ -1,12 +1,26 @@
-
- .p-dialog .product-image {
-            width: 150px;
-            /* margin: 0 auto 2rem auto; */
-            /* display: block; */
-}
-
 .center{
-  text-align: center;
+  text-align: center!important;
 }
 
+th{
+  text-align: center!important;
+
+}
+td{
+  text-align: center!important;
+
+}
+
+.empList{
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  /* background-color: rgb(219, 214, 214); */
+
+}
+button{
+  padding:.4rem;
+}
+
+p{
+  color:red;
+}
 

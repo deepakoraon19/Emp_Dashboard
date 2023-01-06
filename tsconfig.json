@@ -18,6 +18,8 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2020",
+    "allowJs":true,
+    "noImplicitAny": false,
     "module": "es2020",
     "lib": [
       "es2020",

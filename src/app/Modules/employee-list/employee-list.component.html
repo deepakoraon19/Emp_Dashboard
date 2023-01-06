@@ -1,27 +1,85 @@
-<p-toolbar styleClass="mb-4 gap-2">
-    <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()">New</button>
-</p-toolbar>
-<p-table [value]="records" styleClass="p-datatable-gridlines">
-  <ng-template pTemplate="header">
+<div class="empList">
+  <p-toolbar styleClass="gap-2">
+    <button pButton pRipple label="New" type="button" icon="pi pi-plus" style="" class="p-button-info mr-1" (click)="openNew()"></button>
+    <!-- <button class="btn btn-primary" (click)="downloadAsPDF()">Export To PDF</button> -->
+  </p-toolbar>
+  <div id="pdfTable" #pdfTable>
+    <p-table [value]="records" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="col-1"></th>
+            <th pSortableColumn="id" class="col-1">ID <p-sortIcon field="id"></p-sortIcon></th>
+            <th pSortableColumn="firstName" class="col-1">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
+            <th pSortableColumn="secondName" class="col-1">Second Name <p-sortIcon field="secondName"></p-sortIcon></th>
+            <th pSortableColumn="department" class="col-1">Department <p-sortIcon field="department"></p-sortIcon></th>
+            <th pSortableColumn="role" class="col-1">Role <p-sortIcon field="role"></p-sortIcon></th>
+            <th pSortableColumn="phone" class="col-1">Phone <p-sortIcon field="phone"></p-sortIcon></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-records>
       <tr class="row">
-        <th></th>
-          <th>Id</th>
-          <th>FirstName</th>
-          <th>SecondName</th>
-          <th>Department</th>
-          <th>Role</th>
-          <th>Phone</th>
+        <td class="col-1" style="text-align: left ! important">
+          <button  pButton label="" icon="pi pi-pencil" class="p-button-warning mr-2" (click)="editEmployee(records)"></button>
+          <button pButton label="" icon="pi pi-trash" class="p-button-danger" (click)="confirm('delete',records)"></button>
+        </td>
+        <td>{{records.id}}</td>
+        <td>{{records.firstName}}</td>
+        <td>{{records.secondName}}</td>
+        <td>{{records.department}}</td>
+        <td>{{records.role}}</td>
+        <td>{{records.phone}}</td>
       </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-records>
-      <tr class="row">
-          <td><button>Edit</button></td>
-          <td class="center">{{records.id}}</td>
-          <td class="center">{{records.firstName}}</td>
-          <td class="center">{{records.secondName}}</td>
-          <td class="center">{{records.department}}</td>
-          <td class="center">{{records.role}}</td>
-          <td class="center">{{records.phone}}</td>
-      </tr>
-  </ng-template>
-</p-table>
+    </ng-template>
+  </p-table>
+</div>
+  <p-dialog [(visible)]="employeeDialog" [style]="{width: '400px'}" header="Employee Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+      <div class="field">
+        <label for="firstname">First Name</label>
+        <span class="p-error" *ngIf="submitted && employee.firstName===''">*</span>
+        <input type="text" pInputText id="firstname" [(ngModel)]="employee.firstName" required autofocus />
+      </div>
+      <div class="field">
+        <label for="secondname">Last Name</label>
+        <span class="p-error" *ngIf="submitted && employee.secondName===''">*</span>
+        <input type="text" pInputText id="secondname" [(ngModel)]="employee.secondName" required autofocus />
+      </div>
+      <div class="field">
+        <label for="department">Department</label>
+        <span class="p-error" *ngIf="submitted && employee.department===''">*</span>
+        <p-dropdown appendTo="body" [(ngModel)]="employee.department" inputId="department" [options]="departments" placeholder="Select">
+          <ng-template let-option pTemplate="department">
+            <span>{{option}}</span>
+          </ng-template>
+        </p-dropdown>
+      </div>
+      <div class="field">
+        <label for="role">Role</label>
+        <input type="text" pInputText id="role" [(ngModel)]="employee.role" required autofocus />
+      </div>
+      <div class="formgrid grid">
+        <div class="field col">
+          <label for="EmpID">Employee ID</label>
+          <span class="p-error" *ngIf="submitted && !employee.id">*</span>
+          <p-inputNumber id="EmpID" [(ngModel)]="employee.id" ></p-inputNumber>
+        </div>
+        <div class="field col">
+          <label for="Phone">Phone</label>
+          <span class="p-error" *ngIf="submitted && employee.phone===''">*</span>
+          <input type="text" pInputText id="Phone" [(ngModel)]="employee.phone" required autofocus />
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-success" (click)="confirm('save')"></button>
+      <button pButton pRipple label="Cancel" icon="pi pi-times " class="p-button-danger" (click)="employeeDialog=false"></button>
+    </ng-template>
+  </p-dialog>
+  <p-dialog header="Error" [(visible)]="errorDialog">
+    <span>Please check the details provided.</span>
+</p-dialog>
+<p-dialog header="Error" [(visible)]="reEntryDialog">
+  <span>Employee exists with same ID</span>
+</p-dialog>
+  <p-confirmDialog  header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
